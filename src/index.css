@@ -5,3 +5,8 @@
 .btn {
   margin: 5px;
 }
+
+.input-group-addon {
+  background: transparent;
+  border: transparent;
+}

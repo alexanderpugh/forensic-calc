@@ -6,7 +6,18 @@ import { Container, Row, Col, Button, Panel, CheckBox } from '../components/Boot
 import NumberInput from '../components/NumberInput';
 import { linearRegression, ratioY } from '../lib/linearRegression';
 
+/**
+ * Class representing the linear regression page
+ *
+ * @extends React.Component
+ */
 class LinearRegression extends React.Component {
+
+  /**
+   * Create a LinearRegression component
+   *
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
 
@@ -57,7 +68,8 @@ class LinearRegression extends React.Component {
     }
 
     this.setState({
-      [stateProp]: copy
+      [stateProp]: copy,
+      calculated: false
     });
   }
 
@@ -67,7 +79,8 @@ class LinearRegression extends React.Component {
     const name = target.name;
 
     this.setState({
-      [name]: [...this.state[name], this.createDefaultXY()]
+      [name]: [...this.state[name], this.createDefaultXY()],
+      calculated: false
     });
   }
 
@@ -77,7 +90,8 @@ class LinearRegression extends React.Component {
     const [stateProp, index] = target.name.split(':');
 
     this.setState({
-      [stateProp]: this.state[stateProp].filter((el, i) => i !== _.toNumber(index))
+      [stateProp]: this.state[stateProp].filter((el, i) => i !== _.toNumber(index)),
+      calculated: false
     });
   }
 
@@ -108,7 +122,8 @@ class LinearRegression extends React.Component {
     this.setState({
       standards: createXYArray(this.state.standards),
       samples: createXYArray(this.state.samples),
-      ratioKnown: !this.state.ratioKnown
+      ratioKnown: !this.state.ratioKnown,
+      calculated: false
     });
   }
 
@@ -120,7 +135,8 @@ class LinearRegression extends React.Component {
   /** Handle changing the prepare conc input */
   changePrepareConcInputValue(e) {
     this.setState({
-      preparedAt: _.toNumber(e.target.value)
+      preparedAt: _.toNumber(e.target.value),
+      calculated: false
     });
   }
 
@@ -142,9 +158,13 @@ class LinearRegression extends React.Component {
     });
   }
 
+  /** Render the component */
   render() {
     return (
       <Container>
+        <Row>
+          <Col><h1>Linear Regression</h1></Col>
+        </Row>
         <div className="panel panel-info">
           <div className="panel-heading">
             <b>Setup</b>
@@ -230,16 +250,6 @@ class LinearRegression extends React.Component {
       </Container>
     );
   }
-
-  // TODO remove after testing
-  // debugMethod () {
-  //   this.setState({
-  //     ratioKnown: true,
-  //     standards: _.times(10, (i) => ({ x: i + 1, y: i + 1 * _.sample([ i + 1 * 5, i + 1 * 5.1223, i + 1 * 5.3323, i + 1 * 5.0021 ]) })),
-  //     samples: _.times(6, (i) => ({ x: 0, y: _.sample([10, 10.5, 11, 11.5]) })),
-  //     preparedAt: 1
-  //   });
-  // }
 }
 
 export default LinearRegression;

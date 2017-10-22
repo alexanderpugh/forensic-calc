@@ -3,6 +3,7 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 
 import LinearRegression from '../pages/LinearRegression';
 import SinglePointEstimation from '../pages/SinglePointEstimation';
+import HeatOfExplosion from '../pages/HeatOfExplosion';
 import Home from '../pages/Home';
 import Error404 from '../pages/Error404';
 
@@ -13,6 +14,7 @@ const Router = (props) => {
         <Route exact path="/" component={Home} />
         <Route exact path="/linear-regression" component={LinearRegression} />
         <Route exact path="/single-point-estimation" component={SinglePointEstimation} />
+        <Route exact path="/heat-of-explosion" component={HeatOfExplosion} />
         <Route component={Error404}></Route>
       </Switch>
     </BrowserRouter>

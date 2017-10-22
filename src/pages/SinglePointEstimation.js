@@ -42,7 +42,7 @@ class SinglePointEstimation extends React.Component {
         yStandard: 0,
         yInternal: 0
       },
-      calculationComplete: false
+      calculated: false
     };
   }
 
@@ -55,7 +55,7 @@ class SinglePointEstimation extends React.Component {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
 
-    this.setState({ useInternalStandard: value });
+    this.setState({ useInternalStandard: value, calculated: false });
   }
 
   /** Trigger the calculation */
@@ -77,7 +77,7 @@ class SinglePointEstimation extends React.Component {
         ...prev.analyte,
         concentration
       },
-      calculationComplete: true
+      calculated: true
     }));
   }
 
@@ -87,7 +87,7 @@ class SinglePointEstimation extends React.Component {
    * @param {object} event
    */
   handleClearButtonClick(event) {
-    this.setState(this.getDefaultState);
+    this.setState(this.getDefaultState());
   }
 
   /**
@@ -103,7 +103,8 @@ class SinglePointEstimation extends React.Component {
       [substance]: {
         ...prev[substance],
         [property]: _.toNumber(value)
-      }
+      },
+      calculated: false
     }));
   }
 
@@ -111,6 +112,9 @@ class SinglePointEstimation extends React.Component {
   render() {
     return (
       <Container>
+        <Row>
+          <Col><h1>Single Point Estimation</h1></Col>
+        </Row>
         <Row>
           <Col>
             <CheckBox text="Use internal standard" checked={this.state.useInternalStandard} onChange={this.handleInternalStandardCheckChange.bind(this)} />
@@ -135,7 +139,7 @@ class SinglePointEstimation extends React.Component {
             <Button text="RESET" onClick={this.handleClearButtonClick.bind(this)} size="xl" type="warning" />
             <Link to="/" className="btn btn-xl btn-danger">CANCEL</Link>
 
-            {this.state.calculationComplete ?
+            {this.state.calculated ?
               <Panel type="success" title="Analyte Concentration">
                 {this.state.analyte.concentration}
               </Panel>
