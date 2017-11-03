@@ -10,5 +10,9 @@
   {
     "display": "Heat of Explosion",
     "url": "/heat-of-explosion"
+  },
+  {
+    "display": "Explosive Power",
+    "url": "/explosive-power"
   }
 ]

@@ -6,18 +6,8 @@ import { Container, Row, Col, Button, Panel, CheckBox } from '../components/Boot
 import NumberInput from '../components/NumberInput';
 import { linearRegression, ratioY } from '../lib/linearRegression';
 
-/**
- * Class representing the linear regression page
- *
- * @extends React.Component
- */
 class LinearRegression extends React.Component {
 
-  /**
-   * Create a LinearRegression component
-   *
-   * @param {object} props
-   */
   constructor(props) {
     super(props);
 
@@ -32,18 +22,10 @@ class LinearRegression extends React.Component {
     this.changePrepareConcInputValue = this.changePrepareConcInputValue.bind(this);
   }
 
-  /**
-   * Create an object with deafult x and y set to 0
-   *
-   * @return {object}
-   */
   createDefaultXY() {
     return { x: 0, y: 0 };
   }
 
-  /**
-   * Get an objet of the default state
-   */
   getDefaultState() {
     return {
       standards: [this.createDefaultXY()],
@@ -55,13 +37,12 @@ class LinearRegression extends React.Component {
     };
   }
 
-  /** Handle the X and Y input changes */
   changeInputValue(e) {
     const target = e.target;
     const [stateProp, arrayProp, index, subValue = null] = target.name.split(':');
 
     const copy = [...this.state[stateProp]];
-    if(_.isNull(subValue)) {
+    if (_.isNull(subValue)) {
       copy[_.toNumber(index)][arrayProp] = _.toNumber(target.value);
     } else {
       copy[_.toNumber(index)][arrayProp][subValue] = _.toNumber(target.value);
@@ -73,7 +54,6 @@ class LinearRegression extends React.Component {
     });
   }
 
-  /** Append a XY object to either the samples or the standards */
   addNewXY(e) {
     const target = e.target;
     const name = target.name;
@@ -84,7 +64,6 @@ class LinearRegression extends React.Component {
     });
   }
 
-  /** Remove a XY object from either the samples or the standards */
   removeXY(e) {
     const target = e.target;
     const [stateProp, index] = target.name.split(':');
@@ -95,24 +74,9 @@ class LinearRegression extends React.Component {
     });
   }
 
-  /** Toggle the value of ratioKnown and split the standard and samples y values into two */
   ratioKnownToogle() {
-
-    /**
-     * Create a modified XY object
-     *
-     * @param {number} x
-     * @param {any} y
-     * @return {object}
-     */
     const setXY = (x = 0, y = 0) => ({ x, y });
 
-    /**
-     * Create a modified array of XY objects
-     *
-     * @param {array} array
-     * @return {array}
-     */
     const createXYArray = (array) => {
       return array.map(el => {
         return this.state.ratioKnown ? setXY(el.x, { height: 0, interStandHeight: 0 }) : setXY(el.x)
@@ -127,12 +91,10 @@ class LinearRegression extends React.Component {
     });
   }
 
-  /** Reset the state to the original */
   reset() {
     this.setState(this.getDefaultState);
   }
 
-  /** Handle changing the prepare conc input */
   changePrepareConcInputValue(e) {
     this.setState({
       preparedAt: _.toNumber(e.target.value),
@@ -140,17 +102,15 @@ class LinearRegression extends React.Component {
     });
   }
 
-  /** Calculate the unknown conc */
   calculateResult() {
     if (this.state.ratioKnown) {
       return linearRegression(this.state.standards, this.state.samples, this.state.preparedAt);
     }
 
     const getResult = (array) => ratioY(array, 'height', 'interStandHeight');
-    return linearRegression(getResult(this.state.standards), getResult(this.state.samples),  this.state.preparedAt);
+    return linearRegression(getResult(this.state.standards), getResult(this.state.samples), this.state.preparedAt);
   }
 
-  /** Calculate and display the result */
   calculate() {
     this.setState({
       calculated: true,
@@ -158,7 +118,6 @@ class LinearRegression extends React.Component {
     });
   }
 
-  /** Render the component */
   render() {
     return (
       <Container>
@@ -216,17 +175,17 @@ class LinearRegression extends React.Component {
               <div key={i} className="well">
                 <Row>
                   {this.state.ratioKnown ?
-                  <Col>
-                    <NumberInput value={std.y} name={'samples:y:' + i} onChange={this.changeInputValue} label="Peak Height/Area Ratio" />
-                  </Col> :
-                  <div>
-                  <Col medium="6" large="6">
-                    <NumberInput value={std.y.height} name={'samples:y:' + i + ':height'} onChange={this.changeInputValue} label="Peak Height/Area" />
-                  </Col>
-                  <Col medium="6" large="6">
-                    <NumberInput value={std.y.interStandHeight} name={'samples:y:' + i + ':interStandHeight'} onChange={this.changeInputValue} label="IS Height/Area" />
-                  </Col>
-                  </div>}
+                    <Col>
+                      <NumberInput value={std.y} name={'samples:y:' + i} onChange={this.changeInputValue} label="Peak Height/Area Ratio" />
+                    </Col> :
+                    <div>
+                      <Col medium="6" large="6">
+                        <NumberInput value={std.y.height} name={'samples:y:' + i + ':height'} onChange={this.changeInputValue} label="Peak Height/Area" />
+                      </Col>
+                      <Col medium="6" large="6">
+                        <NumberInput value={std.y.interStandHeight} name={'samples:y:' + i + ':interStandHeight'} onChange={this.changeInputValue} label="IS Height/Area" />
+                      </Col>
+                    </div>}
                   <Col medium="2" large="2">
                     <Button onClick={this.removeXY} name={'samples:' + i} text="REMOVE" size="xs" type="danger" disabled={i === 0} />
                   </Col>
@@ -237,10 +196,12 @@ class LinearRegression extends React.Component {
           </Col>
         </Row>
         <Row>
-          <hr />
-          <Button text="CACLCULATE" onClick={this.calculate} size="xl" type="info" />
-          <Button text="RESET" onClick={this.reset} size="xl" type="warning" />
-          <Link to="/" className="btn btn-xl btn-danger">CANCEL</Link>
+          <Col medium="12" large="12">
+            <hr />
+            <Button text="CACLCULATE" onClick={this.calculate} size="xl" type="info" />
+            <Button text="RESET" onClick={this.reset} size="xl" type="warning" />
+            <Link to="/" className="btn btn-xl btn-danger">CANCEL</Link>
+          </Col>
         </Row>
         {this.state.calculated && <Row>
           <Panel type="success" title="Result">

@@ -6,29 +6,14 @@ import { Container, Row, Col, Button, Panel, CheckBox } from '../components/Boot
 import NumberInput from '../components/NumberInput';
 import { singlePointEstimation } from '../lib/singlePointEstimation';
 
-/**
- * Class representing the single point estimation page
- *
- * @extends React.Component
- */
 class SinglePointEstimation extends React.Component {
 
-  /**
-   * Create a SinglePointEstimation component
-   *
-   * @param {object} props
-   */
   constructor(props) {
     super(props);
 
     this.state = this.getDefaultState();
   }
 
-  /**
-   * Creates the default component state
-   *
-   * @return {object}
-   */
   getDefaultState() {
     return {
       useInternalStandard: false,
@@ -46,11 +31,6 @@ class SinglePointEstimation extends React.Component {
     };
   }
 
-  /**
-   * Handle switching between use internal standard true and false
-   *
-   * @param {object} event
-   */
   handleInternalStandardCheckChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -58,7 +38,6 @@ class SinglePointEstimation extends React.Component {
     this.setState({ useInternalStandard: value, calculated: false });
   }
 
-  /** Trigger the calculation */
   handleCalculateButtonClick() {
     let concentration;
     try {
@@ -81,22 +60,10 @@ class SinglePointEstimation extends React.Component {
     }));
   }
 
-  /**
-   * Reset the state of the component
-   *
-   * @param {object} event
-   */
   handleClearButtonClick(event) {
     this.setState(this.getDefaultState());
   }
 
-  /**
-   * Handle changing the value of the number inputs
-   *
-   * @param {string} substance - analyte or standard
-   * @param {string} property - the object property being edited
-   * @param {object} event - the js event object
-   */
   handleInputChange(substance, property, event) {
     const value = event.target.value;
     this.setState(prev => ({
@@ -108,7 +75,6 @@ class SinglePointEstimation extends React.Component {
     }));
   }
 
-  /** Render the component */
   render() {
     return (
       <Container>

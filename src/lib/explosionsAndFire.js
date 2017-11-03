@@ -14,10 +14,10 @@ export const heatOfExplosion = (enthalpyOfDetonation, molecularWeight) => _.ceil
  * Calculate the explosive power
  *
  * @param {number} heatOfExp - the heat of explosion
- * @param {number} explosivePower
+ * @param {number} explosiveVolume - the explosive volume
  * @return {number}
  */
-export const explosivePower = (heatOfExp, explosivePower) => _.ceil(heatOfExp * explosivePower, 4);
+export const explosivePower = (heatOfExp, explosiveVolume) => _.ceil(heatOfExp * explosiveVolume, 4);
 
 /**
  * Caclulate the explosive power index

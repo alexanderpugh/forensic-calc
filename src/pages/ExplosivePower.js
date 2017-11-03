@@ -4,9 +4,9 @@ import _ from 'lodash';
 
 import { Container, Row, Col, Button, Panel } from '../components/Bootstrap';
 import NumberInput from '../components/NumberInput';
-import { heatOfExplosion } from '../lib/explosionsAndFire';
+import { explosivePower } from '../lib/explosionsAndFire';
 
-class HeatOfExplosion extends React.Component {
+class ExplosivePower extends React.Component {
 
   constructor(props) {
     super(props);
@@ -18,24 +18,17 @@ class HeatOfExplosion extends React.Component {
     this.calculate = this.calculate.bind(this);
   }
 
-  reset() {
-    this.setState(this.getDefaultState());
-  }
-
-  calculate() {
-    this.setState({
-      calculated: true,
-      result: heatOfExplosion(_.toNumber(this.state.enthalpyOfDetonation), _.toNumber(this.state.molecularWeight))
-    });
-  }
-
   getDefaultState() {
     return {
-      enthalpyOfDetonation: 0,
-      molecularWeight: 0,
+      heatOfExplosion: 0,
+      explosiveVolume: 0,
       calculated: false,
       result: 0
     };
+  }
+
+  reset() {
+    this.setState(this.getDefaultState());
   }
 
   handleInputChange(e) {
@@ -45,20 +38,27 @@ class HeatOfExplosion extends React.Component {
     });
   }
 
+  calculate() {
+    this.setState({
+      calculated: true,
+      result: explosivePower(_.toNumber(this.state.heatOfExplosion), _.toNumber(this.state.explosiveVolume))
+    });
+  }
+
   render() {
     return (
       <Container>
         <Row>
           <Col>
-            <h1>Heat of Explosion</h1>
+            <h1>Explosive Power</h1>
           </Col>
         </Row>
         <Row>
           <Col medium="6" large="6">
-            <NumberInput value={this.state.enthalpyOfDetonation} label="Enthalpy of Detonation" name="enthalpyOfDetonation" onChange={this.handleInputChange}>Kjmol<sup>-1</sup></NumberInput>
+            <NumberInput value={this.state.enthalpyOfDetonation} label="Heat of Explosion" name="heatOfExplosion" onChange={this.handleInputChange}>KjKg<sup>-1</sup></NumberInput>
           </Col>
           <Col medium="6" large="6">
-            <NumberInput value={this.state.molecularWeight} label="Molecular Weight" name="molecularWeight" onChange={this.handleInputChange}>gmol<sup>-1</sup></NumberInput>
+            <NumberInput value={this.state.molecularWeight} label="Explosive Volume" name="explosiveVolume" onChange={this.handleInputChange}>dm<sup>-3</sup>g<sup>-1</sup></NumberInput>
           </Col>
         </Row>
         <Row>
@@ -73,14 +73,13 @@ class HeatOfExplosion extends React.Component {
           <Row>
             <Col>
               <Panel type="success" title="Result">
-                <p>{this.state.result} kjkg<sup>-1</sup></p>
+                <p>{this.state.result}</p>
                 <pre>
                   <b>Steps</b>
                   <ul>
-                    <li>Heat of explosion = (enthalpy of detonation * 1000) / molecular weight</li>
-                    <li>Heat of explosion = ({this.state.enthalpyOfDetonation} * 1000) / {this.state.molecularWeight}</li>
-                    <li>Heat of explosion = {this.state.result}</li>
-                    <li>(Kjmol<sup>-1</sup> * 1000) / gmol<sup>-1</sup> = kjkg<sup>-1</sup></li>
+                    <li>Explosive Power = heat of explosion * explosive volume</li>
+                    <li>Explosive Power = {this.state.heatOfExplosion} * {this.state.explosiveVolume}</li>
+                    <li>Explosive Power = {this.state.result}</li>
                   </ul>
                 </pre>
               </Panel>
@@ -92,4 +91,4 @@ class HeatOfExplosion extends React.Component {
   }
 }
 
-export default HeatOfExplosion;
+export default ExplosivePower;
